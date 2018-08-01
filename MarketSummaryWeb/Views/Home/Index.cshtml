@@ -1,0 +1,40 @@
+﻿@model IEnumerable<MarketSummaryWeb.Models.ProspectSearchCriteria>
+@{
+    ViewBag.Title = "List of Prospects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>List of Prospects</h2>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProspectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SearchCriteria)
+        </th>
+       
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProspectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SearchCriteria)
+            </td>
+         
+            <td>
+                @Html.ActionLink("Edit", "EditProspectSearchCriteria", new { id = item.Id, category = item.ProspectName }) |
+               @* @Html.ActionLink("Details", "Details", new { id = item.Id, category = item.ProspectName }) |*@
+                @Html.ActionLink("Delete", "DeleteProspectSearchCriteria", new { id = item.Id, category = item.ProspectName })
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Create New", "CreateProspectSearchCriteria")
+    <br /><br />
+    @Html.ActionLink("Run Prospect Report", "ProspectReport")
+</p>
