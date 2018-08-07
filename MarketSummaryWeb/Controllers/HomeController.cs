@@ -22,7 +22,7 @@ namespace MarketSummaryWeb.Controllers
         [HttpPost]
         [ActionName("CreateProspectSearchCriteria")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync([Bind(Include = "Id,ProspectName,SearchCriteria")] ProspectSearchCriteria prospectSearchCriteria)
+        public async Task<ActionResult> CreateAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
             if (ModelState.IsValid)
             {
@@ -41,7 +41,7 @@ namespace MarketSummaryWeb.Controllers
         [HttpPost]
         [ActionName("EditProspectSearchCriteria")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync([Bind(Include = "Id,ProspectName,SearchCriteria")] ProspectSearchCriteria prospectSearchCriteria)
+        public async Task<ActionResult> EditAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
             if (ModelState.IsValid)
             {

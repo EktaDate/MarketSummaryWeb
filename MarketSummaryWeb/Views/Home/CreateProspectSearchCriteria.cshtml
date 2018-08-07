@@ -20,10 +20,10 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.SearchCriteria, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.SearchString, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.SearchCriteria, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.SearchCriteria, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.SearchString, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SearchString, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -38,39 +38,39 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.FacebookHandler, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.FacebookUpdates, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.FacebookHandler, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FacebookHandler, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.FacebookUpdates, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FacebookUpdates, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.TwitterHandler, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.TwitterUpdates, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.TwitterHandler, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TwitterHandler, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.TwitterUpdates, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TwitterUpdates, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.LinkedinHandler, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.LinkedinUpdates, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.LinkedinHandler, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LinkedinHandler, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.LinkedinUpdates, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LinkedinUpdates, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.BingSearchlUpdates, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.BingSearchUpdates, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <div class="checkbox">
-                @Html.EditorFor(model => model.BingSearchlUpdates, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BingSearchlUpdates, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.BingSearchUpdates, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BingSearchUpdates, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>

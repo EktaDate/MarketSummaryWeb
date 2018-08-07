@@ -16,28 +16,28 @@ namespace MarketSummaryWeb.Models
         [DisplayName("Prospect Name")]
         public string ProspectName { get; set; }
 
-        [JsonProperty(PropertyName = "searchcriteria")]
-        [DisplayName("Search Criteria")]
-        public string SearchCriteria { get; set; }
+        [JsonProperty(PropertyName = "searchstring")]
+        [DisplayName("Search String")]
+        public string SearchString { get; set; }
 
-        [JsonProperty(PropertyName = "twitterhandler")]
+        [JsonProperty(PropertyName = "twitterupdates")]
         [DisplayName("Twitter Updates")]
-        public bool TwitterHandler { get; set; }
+        public bool TwitterUpdates { get; set; }
 
-        [JsonProperty(PropertyName = "fbhandler")]
+        [JsonProperty(PropertyName = "fbupdates")]
         [DisplayName("Facebook Updates")]
-        public bool FacebookHandler { get; set; }
+        public bool FacebookUpdates { get; set; }
 
-        [JsonProperty(PropertyName = "linkedinhandler")]
+        [JsonProperty(PropertyName = "linkedinupdates")]
         [DisplayName("LinkedIn Updates")]
-        public bool LinkedinHandler { get; set; }
+        public bool LinkedinUpdates { get; set; }
 
         [JsonProperty(PropertyName = "emailupdates")]
         [DisplayName("Email Updates")]
         public bool EmailUpdates { get; set; }
 
-        [JsonProperty(PropertyName = "bingsearchlupdates")]
+        [JsonProperty(PropertyName = "bingsearchupdates")]
         [DisplayName("Bing Search")]
-        public bool BingSearchlUpdates { get; set; }
+        public bool BingSearchUpdates { get; set; }
     }
 }
