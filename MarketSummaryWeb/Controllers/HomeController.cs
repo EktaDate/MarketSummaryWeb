@@ -7,45 +7,48 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Data;
 
 namespace MarketSummaryWeb.Controllers
 {
     public class HomeController : Controller
     {
         [ActionName("Index")]
-        public async Task<ActionResult> IndexAsync()
-        {
-            var items = await CosmosRepository<ProspectSearchCriteria>.GetProspectsAsync(d=>d.Id != null);
-            return View(items);
-        }
+        public  ActionResult Index()
+        {            
+            SQLRepository sqldal = new SQLRepository();
+            List<ProspectSearchCriteria> listProspects =  sqldal.GetProspectData();
+            return View(listProspects);
+        }        
 
         [HttpPost]
         [ActionName("CreateProspectSearchCriteria")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync(ProspectSearchCriteria prospectSearchCriteria)
+        public ActionResult Create(ProspectSearchCriteria prospectSearchCriteria)
         {
             if (ModelState.IsValid)
             {
-                await CosmosRepository<ProspectSearchCriteria>.CreateSearchDataAsync(prospectSearchCriteria);
+                SQLRepository sqldal = new SQLRepository();
+                sqldal.InsertProspects(prospectSearchCriteria);
                 return RedirectToAction("Index");
             }
-
             return View(prospectSearchCriteria);
         }
 
         [ActionName("CreateProspectSearchCriteria")]
-        public async Task<ActionResult> CreateAsync()
+        public async Task<ActionResult> Create()
         {
             return View();
         }
         [HttpPost]
         [ActionName("EditProspectSearchCriteria")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> EditAsync(ProspectSearchCriteria prospectSearchCriteria)
+        public ActionResult Edit(ProspectSearchCriteria prospectSearchCriteria)
         {
             if (ModelState.IsValid)
             {
-                await CosmosRepository<ProspectSearchCriteria>.UpdateItemAsync(prospectSearchCriteria.Id, prospectSearchCriteria);
+                SQLRepository sqldal = new SQLRepository();
+                sqldal.UpdateProspects(prospectSearchCriteria);
                 return RedirectToAction("Index");
             }
 
@@ -53,46 +56,42 @@ namespace MarketSummaryWeb.Controllers
         }
 
         [ActionName("EditProspectSearchCriteria")]
-        public async Task<ActionResult> EditAsync(string id, string category)
+        public ActionResult Edit(string id, string category)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ProspectSearchCriteria prospectSearchCriteria = await CosmosRepository<ProspectSearchCriteria>.GetProspectsAsync(id);
-            if (prospectSearchCriteria == null)
-            {
-                return HttpNotFound();
-            }
+            SQLRepository sqldal = new SQLRepository();
+            string WhereClause = " Where id = " + id;
+            List<ProspectSearchCriteria> listProspects = sqldal.GetProspectData(WhereClause);            
 
-            return View(prospectSearchCriteria);
+            return View(listProspects.FirstOrDefault());
         }
 
         [ActionName("DeleteProspectSearchCriteria")]
-        public async Task<ActionResult> DeleteAsync(string id)
+        public ActionResult Delete(string id, string category)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ProspectSearchCriteria prospectSearchCriteria = await CosmosRepository<ProspectSearchCriteria>.GetProspectsAsync(id);
-            if (prospectSearchCriteria == null)
-            {
-                return HttpNotFound();
-            }
+            SQLRepository sqldal = new SQLRepository();
+            string WhereClause = " Where id = " + id;
+            List<ProspectSearchCriteria> listProspects = sqldal.GetProspectData(WhereClause);
 
-            return View(prospectSearchCriteria);
-        }
-
+            return View(listProspects.FirstOrDefault());
+        }                
         [HttpPost]
         [ActionName("DeleteProspectSearchCriteria")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmedAsync([Bind(Include = "Id,")] string id)
+        public ActionResult Delete(string id)
         {
-            await CosmosRepository<ProspectSearchCriteria>.DeleteItemAsync(id);
-            return RedirectToAction("Index");
+            SQLRepository sqldal = new SQLRepository();
+            sqldal.DeleteProspects(id);
+            return RedirectToAction("Index");        
         }
 
     }
