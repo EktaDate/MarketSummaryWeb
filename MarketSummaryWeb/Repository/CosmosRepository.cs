@@ -12,11 +12,12 @@ using System.Linq.Expressions;
 
 namespace MarketSummaryWeb.Repository
 {
-    public static class CosmosRepository<T> where T : class
+    public class CosmosRepository<T> : IDBRepository<T> where T : class
     {
         private static readonly string DatabaseId = ConfigurationManager.AppSettings["database"];
         private static readonly string CollectionId = ConfigurationManager.AppSettings["collection"];
         private static DocumentClient client;
+
         public static void Initialize()
         {
             client = new DocumentClient(new Uri(ConfigurationManager.AppSettings["endpoint"]), ConfigurationManager.AppSettings["authKey"]);
@@ -24,11 +25,6 @@ namespace MarketSummaryWeb.Repository
             CreateCollectionIfNotExistsAsync().Wait();
         }
 
-
-        /// <summary>
-        /// Create Database for MarketData and Search Data collection
-        /// </summary>
-        /// <returns></returns>
         private static async Task CreateDatabaseIfNotExistsAsync()
         {
             try
@@ -67,20 +63,26 @@ namespace MarketSummaryWeb.Repository
                 }
             }
         }
-        public static async Task<Document> CreateSearchDataAsync(T ProspectSearchCriteria)
+
+        public async Task<bool> CreateSearchDataAsync(T ProspectSearchCriteria)
         {
 
-            return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), ProspectSearchCriteria);
+            Document doc = await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), ProspectSearchCriteria);
+            if (doc == null)
+            {
+                return false;
+            }
 
+            return true;
             //return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, SearchData.GetType(SearchData).id), SearchData);
         }
 
-        public static async Task<IEnumerable<T>> GetProspectsAsync(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> GetProspectsAsync(Expression<Func<T, bool>> predicate)
         {
             IDocumentQuery<T> query = client.CreateDocumentQuery<T>(
                 UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
                 new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
-                .Where(predicate)               
+                .Where(predicate)
                 .AsDocumentQuery();
 
             List<T> results = new List<T>();
@@ -92,12 +94,12 @@ namespace MarketSummaryWeb.Repository
             return results;
         }
 
-        public static async Task<T> GetProspectsAsync(string id)
+        public async Task<T> GetProspectsAsync(int id)
         {
             try
             {
                 Document document =
-                    await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id));
+                    await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
                 return (T)(dynamic)document;
             }
             catch (DocumentClientException e)
@@ -113,14 +115,19 @@ namespace MarketSummaryWeb.Repository
             }
         }
 
-        public static async Task<Document> UpdateItemAsync(string id, T item)
+        public async Task<bool> UpdateSearchDataAsync(int id, T item)
         {
-            return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id), item);
+            Document doc = await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), item);
+            if (doc == null)
+            {
+                return false;
+            }
+            return true;
         }
 
-        public static async Task DeleteItemAsync(string id)
+        public async Task DeleteSearchDataAsync(int id)
         {
-            await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id));
+            await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
         }
     }
 }

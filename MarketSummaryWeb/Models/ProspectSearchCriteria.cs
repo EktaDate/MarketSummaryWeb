@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -10,14 +11,16 @@ namespace MarketSummaryWeb.Models
     public class ProspectSearchCriteria
     {
         [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [JsonProperty(PropertyName = "prospectname")]
         [DisplayName("Prospect Name")]
+        [Required]
         public string ProspectName { get; set; }
 
         [JsonProperty(PropertyName = "searchstring")]
         [DisplayName("Search String")]
+        [Required]
         public string SearchString { get; set; }
 
         [JsonProperty(PropertyName = "twitterupdates")]

@@ -19,6 +19,7 @@ namespace MarketSummaryWeb
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //CosmosRepository<ProspectSearchCriteria>.Initialize();
+            AutoMapper.Mapper.Initialize(cfg => cfg.AddProfile<AutoMapperProfile>());
         }
     }
 }
