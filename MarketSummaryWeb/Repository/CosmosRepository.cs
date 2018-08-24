@@ -9,10 +9,11 @@ using System.Configuration;
 using Microsoft.Azure.Documents.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using MarketSummaryWeb.Models;
 
 namespace MarketSummaryWeb.Repository
 {
-    public class CosmosRepository<T> : IDBRepository<T> where T : class
+    public class CosmosRepository : IDBRepository 
     {
         private static readonly string DatabaseId = ConfigurationManager.AppSettings["database"];
         private static readonly string CollectionId = ConfigurationManager.AppSettings["collection"];
@@ -64,7 +65,7 @@ namespace MarketSummaryWeb.Repository
             }
         }
 
-        public async Task<bool> CreateSearchDataAsync(T ProspectSearchCriteria)
+        public async Task<bool> CreateProspectSearchDataAsync(ProspectSearchCriteria ProspectSearchCriteria)
         {
 
             Document doc = await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId), ProspectSearchCriteria);
@@ -73,34 +74,47 @@ namespace MarketSummaryWeb.Repository
                 return false;
             }
 
-            return true;
-            //return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, SearchData.GetType(SearchData).id), SearchData);
+            return true;            
         }
 
-        public async Task<IEnumerable<T>> GetProspectsAsync(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<ProspectSearchCriteria>> GetExisitingProspectSearchCriteriaAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
-            IDocumentQuery<T> query = client.CreateDocumentQuery<T>(
-                UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
-                new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
-                .Where(predicate)
-                .AsDocumentQuery();
 
-            List<T> results = new List<T>();
+            Expression<Func<ProspectSearchCriteria, bool>> predicate = null;
+            IDocumentQuery<ProspectSearchCriteria> query = null;
+            if (prospectSearchCriteria != null)
+            {
+                predicate = (p => p.ProspectName.ToLower() == prospectSearchCriteria.ProspectName.ToLower()
+                            && p.SearchString.ToLower() == prospectSearchCriteria.SearchString.ToLower() && p.Id != prospectSearchCriteria.Id);
+                query = client.CreateDocumentQuery<ProspectSearchCriteria>(
+                        UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                        new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                        .Where(predicate)
+                        .AsDocumentQuery();
+            }
+            else
+            {
+                query = client.CreateDocumentQuery<ProspectSearchCriteria>(
+                       UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                       new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })                       
+                       .AsDocumentQuery();
+            }                  
+            List<ProspectSearchCriteria> results = new List<ProspectSearchCriteria>();
             while (query.HasMoreResults)
             {
-                results.AddRange(await query.ExecuteNextAsync<T>());
+                results.AddRange(await query.ExecuteNextAsync<ProspectSearchCriteria>());
             }
 
             return results;
         }
 
-        public async Task<T> GetProspectsAsync(int id)
+        public async Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(string id)
         {
             try
             {
                 Document document =
-                    await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
-                return (T)(dynamic)document;
+                    await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id));
+                return (ProspectSearchCriteria)(dynamic)document;
             }
             catch (DocumentClientException e)
             {
@@ -115,9 +129,9 @@ namespace MarketSummaryWeb.Repository
             }
         }
 
-        public async Task<bool> UpdateSearchDataAsync(int id, T item)
+        public async Task<bool> UpdateProspectSearchDataAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
-            Document doc = await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()), item);
+            Document doc = await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, prospectSearchCriteria.Id.ToString()), prospectSearchCriteria);
             if (doc == null)
             {
                 return false;
@@ -125,7 +139,7 @@ namespace MarketSummaryWeb.Repository
             return true;
         }
 
-        public async Task DeleteSearchDataAsync(int id)
+        public async Task DeleteProspectSearchDataAsync(string id)
         {
             await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, id.ToString()));
         }

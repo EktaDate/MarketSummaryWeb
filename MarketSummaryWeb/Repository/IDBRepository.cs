@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarketSummaryWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace MarketSummaryWeb.Repository
 {
-    public interface IDBRepository<T> where T: class
+    public interface IDBRepository
     {
-        Task<IEnumerable<T>> GetProspectsAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<ProspectSearchCriteria>> GetExisitingProspectSearchCriteriaAsync(ProspectSearchCriteria prospectSearchCriteria);
 
-        Task<T> GetProspectsAsync(int id);
+        Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(string id);
 
-        Task<bool> CreateSearchDataAsync(T ProspectSearchCriteria);
+        Task<bool> CreateProspectSearchDataAsync(ProspectSearchCriteria ProspectSearchCriteria);
 
-        Task<bool> UpdateSearchDataAsync(int id, T item);
+        Task<bool> UpdateProspectSearchDataAsync(ProspectSearchCriteria ProspectSearchCriteria);
 
-        Task DeleteSearchDataAsync(int id);
+        Task DeleteProspectSearchDataAsync(string id);
     }
 }

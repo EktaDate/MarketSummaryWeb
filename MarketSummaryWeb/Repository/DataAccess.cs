@@ -24,25 +24,25 @@ namespace MarketSummaryWeb.Repository
 
             return instance;
         }
-
         public async Task<IEnumerable<ProspectSearchCriteria>> GetProspectSearchCriteriaAsync()
         {
-            IDBRepository<ProspectSearchCriteria> dbObejct = FactoryClass<ProspectSearchCriteria>.CreateDBRepositoryObject();
-            IEnumerable<ProspectSearchCriteria> prospectSearchCriteriaList = await dbObejct.GetProspectsAsync(d => d.Id != null);
+            IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();
+            IEnumerable<ProspectSearchCriteria> prospectSearchCriteriaList = await dbObejct.GetExisitingProspectSearchCriteriaAsync(null);
             return prospectSearchCriteriaList.OrderBy(p => p.ProspectName).ThenBy(k => k.SearchString);
         }
 
-        public async Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(int id)
+        public async Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(int id,string rowKey)
         {
-            IDBRepository<ProspectSearchCriteria> dbObejct = FactoryClass<ProspectSearchCriteria>.CreateDBRepositoryObject();
-            ProspectSearchCriteria prospectSearchCriteria = await dbObejct.GetProspectsAsync(id);
+            IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();
+            string key = string.IsNullOrEmpty(rowKey) ? id.ToString() : rowKey; 
+            ProspectSearchCriteria prospectSearchCriteria = await dbObejct.GetProspectSearchCriteriaAsync(key);
             return prospectSearchCriteria;
         }
 
-        public async Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(Expression<Func<ProspectSearchCriteria, bool>> predicate)
+        public async Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
-            IDBRepository<ProspectSearchCriteria> dbObejct = FactoryClass<ProspectSearchCriteria>.CreateDBRepositoryObject();            
-            IEnumerable<ProspectSearchCriteria> prospectSearchCriteriaList = await dbObejct.GetProspectsAsync(predicate);
+            IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();            
+            IEnumerable<ProspectSearchCriteria> prospectSearchCriteriaList = await dbObejct.GetExisitingProspectSearchCriteriaAsync(prospectSearchCriteria);
             return prospectSearchCriteriaList.FirstOrDefault();
         }
 
@@ -50,8 +50,8 @@ namespace MarketSummaryWeb.Repository
         {
             try
             {
-                IDBRepository<ProspectSearchCriteria> dbObejct = FactoryClass<ProspectSearchCriteria>.CreateDBRepositoryObject();
-                return await dbObejct.CreateSearchDataAsync(prospectSearchCriteria);
+                IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();
+                return await dbObejct.CreateProspectSearchDataAsync(prospectSearchCriteria);
             }
             catch
             {
@@ -63,8 +63,8 @@ namespace MarketSummaryWeb.Repository
         {
             try
             {
-                IDBRepository<ProspectSearchCriteria> dbObejct = FactoryClass<ProspectSearchCriteria>.CreateDBRepositoryObject();
-                return await dbObejct.UpdateSearchDataAsync(prospectSearchCriteria.Id, prospectSearchCriteria);
+                IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();
+                return await dbObejct.UpdateProspectSearchDataAsync( prospectSearchCriteria);
             }
             catch
             {
@@ -76,8 +76,9 @@ namespace MarketSummaryWeb.Repository
         {
             try
             {
-                IDBRepository<ProspectSearchCriteria> dbObejct = FactoryClass<ProspectSearchCriteria>.CreateDBRepositoryObject();
-                await dbObejct.DeleteSearchDataAsync(prospectSearchCriteria.Id);
+                IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();
+                string key = string.IsNullOrEmpty(prospectSearchCriteria.RowKey) ? prospectSearchCriteria.Id.ToString() : prospectSearchCriteria.RowKey;
+                await dbObejct.DeleteProspectSearchDataAsync(key);
                 return true;
             }
             catch

@@ -12,9 +12,9 @@ namespace MarketSummaryWeb.Repository
     {
         Task<IEnumerable<ProspectSearchCriteria>> GetProspectSearchCriteriaAsync();
 
-        Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(int id);
+        Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(int id,string rowKey);
 
-        Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(Expression<Func<ProspectSearchCriteria, bool>> predicate);
+        Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(ProspectSearchCriteria prospectSearchCriteria);
 
         Task<bool> InsertProspectSearchData(ProspectSearchCriteria prospectSearchCriteria);
 

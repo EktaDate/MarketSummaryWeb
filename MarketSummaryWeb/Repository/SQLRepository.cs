@@ -13,44 +13,56 @@ using AutoMapper;
 
 namespace MarketSummaryWeb.Repository
 {
-    public class SQLRepository<T> : IDBRepository<T> where T : class
+    public class SQLRepository : IDBRepository
     {
         ProspectDBContext prospectDBContext = new ProspectDBContext();
 
-        public async Task<IEnumerable<T>> GetProspectsAsync(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<ProspectSearchCriteria>> GetExisitingProspectSearchCriteriaAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
-            IEnumerable<ProspectDataSearchCriteria> prospectDataSearchCriteria = await prospectDBContext.ProspectDataSearchCriterias.ToListAsync<ProspectDataSearchCriteria>();
-            IEnumerable<T> prospectSearchCriteriaList = Mapper.Map<IEnumerable<ProspectDataSearchCriteria>, IEnumerable<T>>(prospectDataSearchCriteria);
-            return prospectSearchCriteriaList.AsQueryable().Where(predicate);
+            Expression<Func<ProspectDataSearchCriteria, bool>> predicate = null;
+            IEnumerable<ProspectDataSearchCriteria> prospectDataSearchCriteria = null;
+            if (prospectSearchCriteria != null)
+            {
+                predicate = (p => p.ProspectName.ToLower() == prospectSearchCriteria.ProspectName.ToLower() 
+                            && p.SearchString.ToLower() == prospectSearchCriteria.SearchString.ToLower() && p.Id != prospectSearchCriteria.Id);
+
+                prospectDataSearchCriteria = await prospectDBContext.ProspectDataSearchCriterias.Where(predicate).ToListAsync<ProspectDataSearchCriteria>();
+            }
+            else
+            {
+                prospectDataSearchCriteria = await prospectDBContext.ProspectDataSearchCriterias.ToListAsync<ProspectDataSearchCriteria>();
+            }                        
+            IEnumerable<ProspectSearchCriteria> prospectSearchCriteriaList = Mapper.Map<IEnumerable<ProspectDataSearchCriteria>, IEnumerable<ProspectSearchCriteria>>(prospectDataSearchCriteria);
+            return prospectSearchCriteriaList.AsQueryable();
 
         }
 
-        public async Task<T> GetProspectsAsync(int id)
+        public async Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(string id)
         {
-            ProspectDataSearchCriteria prospectDataSearchCriteria = await prospectDBContext.ProspectDataSearchCriterias.FindAsync(id);
-            T prospectsearchCriteria = Mapper.Map<ProspectDataSearchCriteria, T>(prospectDataSearchCriteria);
+            ProspectDataSearchCriteria prospectDataSearchCriteria = await prospectDBContext.ProspectDataSearchCriterias.FindAsync(int.Parse(id));
+            ProspectSearchCriteria prospectsearchCriteria = Mapper.Map<ProspectDataSearchCriteria, ProspectSearchCriteria>(prospectDataSearchCriteria);
             return prospectsearchCriteria;
         }
 
-        public async Task<bool> CreateSearchDataAsync(T prospectSearchCriteria)
+        public async Task<bool> CreateProspectSearchDataAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
-            ProspectDataSearchCriteria prospectDataSearchCriteria = Mapper.Map<T, ProspectDataSearchCriteria>(prospectSearchCriteria);
+            ProspectDataSearchCriteria prospectDataSearchCriteria = Mapper.Map<ProspectSearchCriteria, ProspectDataSearchCriteria>(prospectSearchCriteria);
             prospectDBContext.ProspectDataSearchCriterias.Add(prospectDataSearchCriteria);
             int result = await prospectDBContext.SaveChangesAsync();
             return result < 1 ? false : true;
         }
 
-        public async Task<bool> UpdateSearchDataAsync(int id, T prospectSearchCriteria)
+        public async Task<bool> UpdateProspectSearchDataAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
-            ProspectDataSearchCriteria prospectDataSearchCriteria = Mapper.Map<T, ProspectDataSearchCriteria>(prospectSearchCriteria);
+            ProspectDataSearchCriteria prospectDataSearchCriteria = Mapper.Map<ProspectSearchCriteria, ProspectDataSearchCriteria>(prospectSearchCriteria);
             prospectDBContext.Entry(prospectDataSearchCriteria).State = EntityState.Modified;
             int result = await prospectDBContext.SaveChangesAsync();
             return result < 1 ? false : true;
         }
 
-        public async Task DeleteSearchDataAsync(int id)
+        public async Task DeleteProspectSearchDataAsync(string id)
         {
-            ProspectDataSearchCriteria ProspectDataSearchCriteria = await prospectDBContext.ProspectDataSearchCriterias.FindAsync(id);
+            ProspectDataSearchCriteria ProspectDataSearchCriteria = await prospectDBContext.ProspectDataSearchCriterias.FindAsync(int.Parse(id));
             prospectDBContext.ProspectDataSearchCriterias.Remove(ProspectDataSearchCriteria);
             await prospectDBContext.SaveChangesAsync();
         }

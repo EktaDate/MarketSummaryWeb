@@ -31,11 +31,7 @@ namespace MarketSummaryWeb.Controllers
         public async Task<ActionResult> CreateAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
             IDataAccess dataAccess = DataAccess.GetInstance();
-            Expression<Func<ProspectSearchCriteria, bool>> predicate = (p => p.ProspectName.ToLower() == prospectSearchCriteria.ProspectName.ToLower() 
-                                                                        && p.SearchString.ToLower() == prospectSearchCriteria.SearchString.ToLower() 
-                                                                        && p.Id != prospectSearchCriteria.Id);
-
-            ProspectSearchCriteria existingProspectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(predicate);
+            ProspectSearchCriteria existingProspectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(prospectSearchCriteria);                                                                     
             if (existingProspectSearchCriteria != null)
             {
                 ModelState.AddModelError("SearchString", "Combination of Prospect Name and Search String already exist.");
@@ -61,11 +57,8 @@ namespace MarketSummaryWeb.Controllers
         public async Task<ActionResult> EditAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
             IDataAccess dataAccess = DataAccess.GetInstance();
-            Expression<Func<ProspectSearchCriteria, bool>> predicate = (p => p.ProspectName.ToLower() == prospectSearchCriteria.ProspectName.ToLower() 
-                                                                        && p.SearchString.ToLower() == prospectSearchCriteria.SearchString.ToLower() 
-                                                                        && p.Id != prospectSearchCriteria.Id);
+            ProspectSearchCriteria existingProspectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(prospectSearchCriteria);
 
-            ProspectSearchCriteria existingProspectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(predicate);
             if (existingProspectSearchCriteria != null)
             {
                 ModelState.AddModelError("SearchString", "Combination of Prospect Name and Search String already exist.");
@@ -79,10 +72,10 @@ namespace MarketSummaryWeb.Controllers
         }
 
         [ActionName("EditProspectSearchCriteria")]
-        public async Task<ActionResult> EditViewAsync(int id)
+        public async Task<ActionResult> EditViewAsync(int id,string rowKey)
         {
             IDataAccess dataAccess = DataAccess.GetInstance();
-            ProspectSearchCriteria prospectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(id);
+            ProspectSearchCriteria prospectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(id,rowKey);
 
             if (prospectSearchCriteria == null)
             {
@@ -92,10 +85,10 @@ namespace MarketSummaryWeb.Controllers
         }
 
         [ActionName("DeleteProspectSearchCriteria")]
-        public async Task<ActionResult> DeleteAsync(int id)
+        public async Task<ActionResult> DeleteAsync(int id,string rowKey)
         {
             IDataAccess dataAccess = DataAccess.GetInstance();
-            ProspectSearchCriteria prospectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(id);
+            ProspectSearchCriteria prospectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(id,rowKey);
 
             if (prospectSearchCriteria == null)
             {
@@ -106,10 +99,10 @@ namespace MarketSummaryWeb.Controllers
         [HttpPost]
         [ActionName("DeleteProspectSearchCriteria")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteViewAsync(int id)
+        public async Task<ActionResult> DeleteViewAsync(int id, string rowKey)
         {
             IDataAccess dataAccess = DataAccess.GetInstance();
-            ProspectSearchCriteria prospectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(id);
+            ProspectSearchCriteria prospectSearchCriteria = await dataAccess.GetProspectSearchCriteriaAsync(id, rowKey);
             if (prospectSearchCriteria == null)
             {
                 return HttpNotFound();
@@ -120,19 +113,27 @@ namespace MarketSummaryWeb.Controllers
         }
 
         [ActionName("ProspectReport")]
-        public ActionResult RunReport()
+        public async Task<ActionResult> RunReport()
         {
 
-            string url = ConfigurationManager.AppSettings["functionurl"];
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            req.Method = "POST";
-            req.ContentType = "application/json";
-            Stream stream = req.GetRequestStream();
-            string json = "{\"name\": \"Azure\" }";
-            byte[] buffer = Encoding.UTF8.GetBytes(json);
-            stream.Write(buffer, 0, buffer.Length);
-            HttpWebResponse res = (HttpWebResponse)req.GetResponse();
+            HttpWebResponse res = await runAzureFunction(ConfigurationManager.AppSettings["consoleappfunctionurl"]);
+            if (res.StatusCode == HttpStatusCode.OK)
+            {
+                res = await runAzureFunction(ConfigurationManager.AppSettings["pythonfunctionurl"]);
+            }                      
             return RedirectToAction("Index");
+        }
+
+        private async Task<HttpWebResponse> runAzureFunction(string functionUrl)
+        {            
+            HttpWebRequest pythonreq = (HttpWebRequest)WebRequest.Create(functionUrl);
+            pythonreq.Method = "POST";
+            pythonreq.ContentType = "application/json";
+            Stream stream1 = pythonreq.GetRequestStream();
+            string json = "{\"type\": \"BingSearch\" }";
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            stream1.Write(buffer, 0, buffer.Length);
+            return (HttpWebResponse )await pythonreq.GetResponseAsync();            
         }
 
     }

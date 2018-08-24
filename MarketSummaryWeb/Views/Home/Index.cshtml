@@ -29,9 +29,9 @@
             </td>
 
             <td>
-                @Html.ActionLink("Edit", "EditProspectSearchCriteria", new { id = item.Id, category = item.ProspectName }) |
+                @Html.ActionLink("Edit", "EditProspectSearchCriteria", new { id = item.Id, Rowkey = item.RowKey ,PartitionKey = item.PartitionKey }) |
                 @* @Html.ActionLink("Details", "Details", new { id = item.Id, category = item.ProspectName }) |*@
-                @Html.ActionLink("Delete", "DeleteProspectSearchCriteria", new { id = item.Id, category = item.ProspectName })
+                @Html.ActionLink("Delete", "DeleteProspectSearchCriteria", new { id = item.Id, Rowkey = item.RowKey })
             </td>
         </tr>
     }

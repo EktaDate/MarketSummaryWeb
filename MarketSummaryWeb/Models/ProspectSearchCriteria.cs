@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,9 +9,10 @@ using System.Web;
 
 namespace MarketSummaryWeb.Models
 {
-    public class ProspectSearchCriteria
+    public class ProspectSearchCriteria : TableEntity
     {
         [JsonProperty(PropertyName = "id")]
+        [IgnoreProperty]
         public int Id { get; set; }
 
         [JsonProperty(PropertyName = "prospectname")]
@@ -20,7 +22,7 @@ namespace MarketSummaryWeb.Models
 
         [JsonProperty(PropertyName = "searchstring")]
         [DisplayName("Search String")]
-        [Required]
+        [Required]      
         public string SearchString { get; set; }
 
         [JsonProperty(PropertyName = "twitterupdates")]
@@ -40,7 +42,8 @@ namespace MarketSummaryWeb.Models
         public bool EmailUpdates { get; set; }
 
         [JsonProperty(PropertyName = "bingsearchupdates")]
-        [DisplayName("Bing Search")]
-        public bool BingSearchUpdates { get; set; }
+        [DisplayName("Bing Search Updates")]
+        public bool BingSearchUpdates { get; set; }                        
     }
+    
 }
