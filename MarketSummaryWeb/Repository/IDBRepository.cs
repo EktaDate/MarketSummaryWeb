@@ -19,5 +19,8 @@ namespace MarketSummaryWeb.Repository
         Task<bool> UpdateProspectSearchDataAsync(ProspectSearchCriteria ProspectSearchCriteria);
 
         Task DeleteProspectSearchDataAsync(string id);
+
+        Task<IEnumerable<ProspectMarketSummary>> GetProspectSummaryDataAsync(string prospectName);
+
     }
 }

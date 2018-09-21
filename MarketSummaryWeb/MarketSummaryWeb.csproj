@@ -70,6 +70,14 @@
       <HintPath>..\packages\WindowsAzure.Storage.9.3.1\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -178,31 +186,36 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SummaryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ProspectData.cs">
-      <DependentUpon>ProspectDBModel.tt</DependentUpon>
+      <DependentUpon>ProspectDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProspectDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProspectDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProspectDataModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProspectDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProspectDataModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProspectDataModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ProspectDataSearchCriteria.cs">
-      <DependentUpon>ProspectDBModel.tt</DependentUpon>
+      <DependentUpon>ProspectDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ProspectDBModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProspectDBModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProspectDBModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProspectDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ProspectDBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProspectDBModel.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ProspectMarketSummary.cs" />
     <Compile Include="Models\ProspectSearchCriteria.cs" />
+    <Compile Include="Models\ProspectSummary.cs">
+      <DependentUpon>ProspectDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AutoMapperProfile.cs" />
     <Compile Include="Repository\CosmosRepository.cs" />
@@ -218,35 +231,33 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\ProspectDBModel.Context.tt">
+    <Content Include="Models\ProspectDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ProspectDBModel.edmx</DependentUpon>
-      <LastGenOutput>ProspectDBModel.Context.cs</LastGenOutput>
+      <DependentUpon>ProspectDataModel.edmx</DependentUpon>
+      <LastGenOutput>ProspectDataModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ProspectDBModel.tt">
+    <Content Include="Models\ProspectDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ProspectDBModel.edmx</DependentUpon>
-      <LastGenOutput>ProspectDBModel.cs</LastGenOutput>
+      <DependentUpon>ProspectDataModel.edmx</DependentUpon>
+      <LastGenOutput>ProspectDataModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\ProspectDBModel.edmx">
+    <EntityDeploy Include="Models\ProspectDataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ProspectDBModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ProspectDataModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\ProspectDBModel.edmx.diagram">
-      <DependentUpon>ProspectDBModel.edmx</DependentUpon>
+    <Content Include="Models\ProspectDataModel.edmx.diagram">
+      <DependentUpon>ProspectDataModel.edmx</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\MarketSummary.pubxml" />
-    <None Include="Properties\PublishProfiles\MarketSummaryWeb20180810060410 - Web Deploy %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\MarketSummaryWeb20180810060410 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -275,6 +286,7 @@
     <Content Include="Views\Home\CreateProspectSearchCriteria.cshtml" />
     <Content Include="Views\Home\DeleteProspectSearchCriteria.cshtml" />
     <Content Include="Views\Home\EditProspectSearchCriteria.cshtml" />
+    <Content Include="Views\Summary\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

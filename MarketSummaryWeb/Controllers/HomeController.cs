@@ -112,28 +112,46 @@ namespace MarketSummaryWeb.Controllers
             return RedirectToAction("Index");
         }
 
-        [ActionName("ProspectReport")]
-        public async Task<ActionResult> RunReport()
+        [ActionName("RunProspectAnalysis")]
+        public async Task<ActionResult> RunProspectAnalysis()
         {
-
+            
             HttpWebResponse res = await runAzureFunction(ConfigurationManager.AppSettings["consoleappfunctionurl"]);
             if (res.StatusCode == HttpStatusCode.OK)
             {
-                res = await runAzureFunction(ConfigurationManager.AppSettings["pythonfunctionurl"]);
-            }                      
-            return RedirectToAction("Index");
+                await runAzureFunctionAsync(ConfigurationManager.AppSettings["pythonfunctionurl"]);
+            }
+            return RedirectToAction("Index");                                    
+        }
+
+        [ActionName("ViewReport")]
+        public async Task<ActionResult> ViewReport()
+        {
+            return RedirectToAction("Index", "Summary");            
         }
 
         private async Task<HttpWebResponse> runAzureFunction(string functionUrl)
         {            
-            HttpWebRequest pythonreq = (HttpWebRequest)WebRequest.Create(functionUrl);
-            pythonreq.Method = "POST";
-            pythonreq.ContentType = "application/json";
-            Stream stream1 = pythonreq.GetRequestStream();
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(functionUrl);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            Stream stream = request.GetRequestStream();
             string json = "{\"type\": \"BingSearch\" }";
             byte[] buffer = Encoding.UTF8.GetBytes(json);
-            stream1.Write(buffer, 0, buffer.Length);
-            return (HttpWebResponse )await pythonreq.GetResponseAsync();            
+            stream.Write(buffer, 0, buffer.Length);
+            return (HttpWebResponse )await request.GetResponseAsync();            
+        }
+
+        private async Task runAzureFunctionAsync(string functionUrl)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(functionUrl);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            Stream stream = request.GetRequestStream();
+            string json = "{\"type\": \"BingSearch\" }";
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            stream.Write(buffer, 0, buffer.Length);
+            request.GetResponseAsync();
         }
 
     }

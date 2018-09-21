@@ -27,5 +27,6 @@ namespace MarketSummaryWeb.Models
     
         public virtual DbSet<ProspectData> ProspectDatas { get; set; }
         public virtual DbSet<ProspectDataSearchCriteria> ProspectDataSearchCriterias { get; set; }
+        public virtual DbSet<ProspectSummary> ProspectSummaries { get; set; }
     }
 }

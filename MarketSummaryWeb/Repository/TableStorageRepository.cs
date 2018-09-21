@@ -144,5 +144,22 @@ namespace MarketSummaryWeb.Repository
             }
 
         }
+
+        public async Task<IEnumerable<ProspectMarketSummary>> GetProspectSummaryDataAsync(string prospectName)
+        {
+            string query = string.Empty;
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                query = "ProspectName eq '"+prospectName+"'";
+            }
+            CloudTable table = GetTableManager(TABLENAME);
+            TableQuery<ProspectMarketSummary> tableQuery = new TableQuery<ProspectMarketSummary>();
+            if (!string.IsNullOrWhiteSpace(query))
+            {
+                tableQuery = new TableQuery<ProspectMarketSummary>().Where(query);
+            }
+            IEnumerable<ProspectMarketSummary> prospectSearchCriteriaList = table.ExecuteQuery(tableQuery);
+            return prospectSearchCriteriaList;
+        }
     }
 }

@@ -18,6 +18,8 @@
           <Property Name="LinkedinUpdates" Type="bit" />
           <Property Name="EmailUpdates" Type="bit" />
           <Property Name="BingSearchUpdates" Type="bit" />
+          <Property Name="IsProcessed" Type="bit" />
+          <Property Name="DataProcessedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="ProspectDataSearchCriteria">
           <Key>
@@ -32,9 +34,19 @@
           <Property Name="EmailUpdates" Type="bit" />
           <Property Name="BingSearchUpdates" Type="bit" />
         </EntityType>
+        <EntityType Name="ProspectSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Summary" Type="nvarchar(max)" />
+          <Property Name="url" Type="varchar" MaxLength="4000" />
+          <Property Name="ProspectDataId" Type="int" />
+        </EntityType>
         <EntityContainer Name="ProspectDataModelStoreContainer">
           <EntitySet Name="ProspectData" EntityType="Self.ProspectData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProspectDataSearchCriteria" EntityType="Self.ProspectDataSearchCriteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProspectSummary" EntityType="Self.ProspectSummary" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
@@ -54,6 +66,8 @@
           <Property Name="LinkedinUpdates" Type="Boolean" />
           <Property Name="EmailUpdates" Type="Boolean" />
           <Property Name="BingSearchUpdates" Type="Boolean" />
+          <Property Name="IsProcessed" Type="Boolean" />
+          <Property Name="DataProcessedDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="ProspectDataSearchCriteria">
           <Key>
@@ -68,9 +82,19 @@
           <Property Name="EmailUpdates" Type="Boolean" />
           <Property Name="BingSearchUpdates" Type="Boolean" />
         </EntityType>
+        <EntityType Name="ProspectSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Summary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="url" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="ProspectDataId" Type="Int32" />
+        </EntityType>
         <EntityContainer Name="ProspectDBContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ProspectDatas" EntityType="Self.ProspectData" />
           <EntitySet Name="ProspectDataSearchCriterias" EntityType="Self.ProspectDataSearchCriteria" />
+          <EntitySet Name="ProspectSummaries" EntityType="Self.ProspectSummary" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -90,6 +114,8 @@
                 <ScalarProperty Name="LinkedinUpdates" ColumnName="LinkedinUpdates" />
                 <ScalarProperty Name="EmailUpdates" ColumnName="EmailUpdates" />
                 <ScalarProperty Name="BingSearchUpdates" ColumnName="BingSearchUpdates" />
+                <ScalarProperty Name="IsProcessed" ColumnName="IsProcessed" />
+                <ScalarProperty Name="DataProcessedDate" ColumnName="DataProcessedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -104,6 +130,16 @@
                 <ScalarProperty Name="LinkedinUpdates" ColumnName="LinkedinUpdates" />
                 <ScalarProperty Name="EmailUpdates" ColumnName="EmailUpdates" />
                 <ScalarProperty Name="BingSearchUpdates" ColumnName="BingSearchUpdates" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProspectSummaries">
+            <EntityTypeMapping TypeName="ProspectDataModel.ProspectSummary">
+              <MappingFragment StoreEntitySet="ProspectSummary">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="ProspectDataId" ColumnName="ProspectDataId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

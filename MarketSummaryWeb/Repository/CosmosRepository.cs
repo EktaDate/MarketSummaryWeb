@@ -129,6 +129,36 @@ namespace MarketSummaryWeb.Repository
             }
         }
 
+        public async Task<IEnumerable<ProspectMarketSummary>> GetProspectSummaryDataAsync(string prospectName)
+        {
+            Expression<Func<ProspectMarketSummary, bool>> predicate = null;
+            IDocumentQuery<ProspectMarketSummary> query = null;
+            if (!string.IsNullOrWhiteSpace(prospectName))
+            {
+                predicate = (p => p.ProspectName.ToLower() == prospectName.ToLower() && !string.IsNullOrWhiteSpace(p.Summary));
+                query = client.CreateDocumentQuery<ProspectMarketSummary>(
+                        UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                        new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                        .Where(predicate)
+                        .AsDocumentQuery();
+            }
+            else
+            {
+                predicate = (p =>!string.IsNullOrWhiteSpace(p.Summary));
+                query = client.CreateDocumentQuery<ProspectMarketSummary>(
+                       UriFactory.CreateDocumentCollectionUri(DatabaseId, CollectionId),
+                       new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                       .AsDocumentQuery();
+            }
+            List<ProspectMarketSummary> results = new List<ProspectMarketSummary>();
+            while (query.HasMoreResults)
+            {
+                results.AddRange(await query.ExecuteNextAsync<ProspectMarketSummary>());
+            }
+
+            return results;
+        }
+
         public async Task<bool> UpdateProspectSearchDataAsync(ProspectSearchCriteria prospectSearchCriteria)
         {
             Document doc = await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseId, CollectionId, prospectSearchCriteria.Id.ToString()), prospectSearchCriteria);

@@ -14,7 +14,7 @@ using AutoMapper;
 namespace MarketSummaryWeb.Repository
 {
     public class SQLRepository : IDBRepository
-    {
+    {      
         ProspectDBContext prospectDBContext = new ProspectDBContext();
 
         public async Task<IEnumerable<ProspectSearchCriteria>> GetExisitingProspectSearchCriteriaAsync(ProspectSearchCriteria prospectSearchCriteria)
@@ -44,7 +44,36 @@ namespace MarketSummaryWeb.Repository
             return prospectsearchCriteria;
         }
 
-        public async Task<bool> CreateProspectSearchDataAsync(ProspectSearchCriteria prospectSearchCriteria)
+        public async Task<IEnumerable<ProspectMarketSummary>> GetProspectSummaryDataAsync(string prospectName)
+        {                       
+           var summaryList = await prospectDBContext.ProspectSummaries
+                .Join(prospectDBContext.ProspectDatas,
+                      summary => summary.ProspectDataId,
+                      prospectdata => prospectdata.Id,
+                      (summary, prospectdata) => new { summary, prospectdata })                      
+                .Select(z => new
+                ProspectMarketSummary
+                {
+                    Id = z.summary.Id,
+                    Summary = z.summary.Summary,
+                    Url = z.summary.url,
+                    ProspectName = z.prospectdata.SearchString,
+
+                }).ToListAsync();
+
+            IEnumerable<ProspectMarketSummary> prospectSummaryList = null; 
+            if (!string.IsNullOrEmpty(prospectName))
+            {
+                prospectSummaryList = summaryList.Where(z => z.Summary != "" && z.ProspectName.ToLower().Contains(prospectName.ToLower()));
+            }
+            else
+            {
+                prospectSummaryList = summaryList.Where(z => z.Summary != "");
+            }
+            return prospectSummaryList;
+        }
+
+        public async Task<bool> CreateProspectSearchDataAsync(ProspectSearchCriteria prospectSearchCriteria)    
         {
             ProspectDataSearchCriteria prospectDataSearchCriteria = Mapper.Map<ProspectSearchCriteria, ProspectDataSearchCriteria>(prospectSearchCriteria);
             prospectDBContext.ProspectDataSearchCriterias.Add(prospectDataSearchCriteria);

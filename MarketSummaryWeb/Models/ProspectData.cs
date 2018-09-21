@@ -23,5 +23,7 @@ namespace MarketSummaryWeb.Models
         public Nullable<bool> LinkedinUpdates { get; set; }
         public Nullable<bool> EmailUpdates { get; set; }
         public Nullable<bool> BingSearchUpdates { get; set; }
+        public Nullable<bool> IsProcessed { get; set; }
+        public Nullable<System.DateTime> DataProcessedDate { get; set; }
     }
 }

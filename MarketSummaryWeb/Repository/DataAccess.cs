@@ -31,6 +31,13 @@ namespace MarketSummaryWeb.Repository
             return prospectSearchCriteriaList.OrderBy(p => p.ProspectName).ThenBy(k => k.SearchString);
         }
 
+        public async Task<IEnumerable<ProspectMarketSummary>> GetProspectSummaryAsync(string prospectName)
+        {
+            IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();
+            IEnumerable<ProspectMarketSummary> prospectSearchCriteriaList = await dbObejct.GetProspectSummaryDataAsync(prospectName);
+            return prospectSearchCriteriaList.OrderBy(p => p.ProspectName);
+        }
+
         public async Task<ProspectSearchCriteria> GetProspectSearchCriteriaAsync(int id,string rowKey)
         {
             IDBRepository dbObejct = FactoryClass.CreateDBRepositoryObject();

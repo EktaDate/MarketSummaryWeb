@@ -1,0 +1,64 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<MarketSummaryWeb.Models.ProspectMarketSummary>
+@{
+    ViewBag.Title = "Market Summary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .alignCenter {
+        text-align: center;
+    }
+    .wordwrap{
+        word-wrap: break-word
+    }
+</style>
+<h3 style="text-align:center">Market Summary Report</h3>
+<p>
+    @using (Html.BeginForm("Index", "Summary", FormMethod.Get, new { @class = "form form-inline"}))
+    {
+        <div class="form-group">
+            @*<label for="prospectName">Prospect Name:</label>*@
+            @Html.TextBox("prospectName", ViewBag.FilterValue as string, new { @class = "form-control", id= "prospectName", style = "width:400px;" })            
+            <input type="submit" class="btn btn-default form-control" value="Search" />
+        </div>    
+    }
+</p>
+  
+<table class="table table-bordered table-striped" style="table-layout:fixed">
+    <tr>
+        <th width="15%" class="alignCenter">
+            @*@Html.DisplayNameFor(model => model.First().ProspectName)*@
+            Search String
+        </th>
+        <th  width="25%" class="alignCenter">
+            @Html.DisplayNameFor(model => model.First().Url)
+        </th>
+        <th width="60%" class="alignCenter">
+            @Html.DisplayNameFor(model => model.First().Summary)
+        </th>        
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td width="15%" class="alignCenter">
+                @Html.DisplayFor(modelItem => item.ProspectName)
+            </td>
+            <td width="25%" class="wordwrap">
+                <a href="@item.Url">@Html.DisplayFor(modelItem => item.Url)</a>
+            </td>   
+            <td width="60%">
+                @Html.DisplayFor(modelItem => item.Summary)
+            </td>
+        </tr>
+    }
+</table>
+<div id='Paging'>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, prospectName = ViewBag.FilterValue }))
+</div>  
+<div>
+    @Html.ActionLink("Back to List", "Index","Home")
+</div>
+
