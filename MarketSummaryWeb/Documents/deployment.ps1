@@ -46,19 +46,19 @@ param(
  $prospectSummaryFunctionAppAPIUrl ="https://mrsprospectsummaryfunctionapp.scm.azurewebsites.net/api/zipdeploy",
  
  [string]
- $prospectFunctionAppFilePath = "D:\Yashpal\Azure\prospectfunctionApp.zip",
+ $prospectFunctionAppFilePath = "",
  
  [string]
- $prospectSummaryFunctionAppFilePath ="D:\Yashpal\Azure\ProspectSummaryFunctionApp.zip",
+ $prospectSummaryFunctionAppFilePath ="",
  
  [string]
- $clientID ="444191f6-8429-4375-86ca-746c471ed6c5",
+ $clientID ="",
  
  [string]
  $key ="2GmCEGn3xYsEsxo/5Ed8d6p1mlrT33mFIYOdA/lEutc=",
  
  [string]
- $tenantID ="add1c500-a6d7-4dbd-b890-7f8cb6f7d861",
+ $tenantID ="",
  
  [string]
  $resourceGroupLocation,
@@ -184,12 +184,12 @@ $PropertiesObject = @{
     "unauthenticatedClientAction" = "0";
     "defaultProvider" = "0";
     "tokenStoreEnabled" = "True";
-    "clientId" = "444191f6-8429-4375-86ca-746c471ed6c5";
-    "issuer" = "https://sts.windows.net/add1c500-a6d7-4dbd-b890-7f8cb6f7d861/";
+    "clientId" = "";
+    "issuer" = "https://sts.windows.net//";
     "allowedAudiences" = "https://mrsmarketSummary.azurewebsites.net/.auth/login/aad/callback";
     "isAadAutoProvisioned" = "True";
-    "aadClientId" = "444191f6-8429-4375-86ca-746c471ed6c5";
-    "openIdIssuer" = "https://sts.windows.net/add1c500-a6d7-4dbd-b890-7f8cb6f7d861/";
+    "aadClientId" = "";
+    "openIdIssuer" = "https://sts.windows.net//";
 }
 
 $resourceType = "Microsoft.Web/sites/config"
