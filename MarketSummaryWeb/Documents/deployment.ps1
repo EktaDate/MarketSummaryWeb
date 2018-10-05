@@ -55,7 +55,7 @@ param(
  $clientID ="",
  
  [string]
- $key ="2GmCEGn3xYsEsxo/5Ed8d6p1mlrT33mFIYOdA/lEutc=",
+ $key ="",
  
  [string]
  $tenantID ="",
