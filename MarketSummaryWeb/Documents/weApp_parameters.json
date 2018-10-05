@@ -1,0 +1,25 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "siteName": {
+      "value": "mrsmarketSummary"
+    },
+    "hostingPlanName": {
+      "value": "mrsMarketSummaryPlan"
+    },
+	"dbtype": {
+      "value": "AZURESQL"
+    },
+	"consoleappfunctionurl": {
+      "value": "https://mrsprospectsfunctionapp.azurewebsites.net/api/RunConsoleApp"
+    },
+	"pythonfunctionurl": {
+      "value": "https://mrsprospectsummaryfunctionapp.azurewebsites.net/api/RunPythonScripts"
+    },
+	"tableStorageConnection": { "value":"DefaultEndpointsProtocol=https;AccountName=prospectdata;AccountKey=drRC8SAfgRWS/VC7Tlew4mF73hxehhUNRKJK7SZpve2W56h9h0Z5rFQWO8aUNsGItUI0aEpdyo6t8u4WTh0BDg==;EndpointSuffix=core.windows.net"
+    },
+	"connectionstring": { "value":"metadata=res://*/Models.ProspectDataModel.csdl|res://*/Models.ProspectDataModel.ssdl|res://*/Models.ProspectDataModel.msl;provider=System.Data.SqlClient;provider connection string=\"data source=mrsmasteksql.database.windows.net;initial catalog=mrsProspectData;user id=sysadmin;password=Mastek491$;MultipleActiveResultSets=True;App=EntityFramework\""
+    }
+  }
+}

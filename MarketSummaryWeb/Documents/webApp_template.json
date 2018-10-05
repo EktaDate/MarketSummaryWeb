@@ -1,0 +1,179 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "siteName": {
+      "type": "string",
+	   "defaultValue": "mrsmarketSummary",
+      "metadata": {
+        "description": "The name of the web app that you wish to create."
+      }
+    },
+    "hostingPlanName": {
+      "type": "string",
+	   "defaultValue": "mrsMarketSummaryPlan",
+      "metadata": {
+        "description": "The name of the App Service plan to use for hosting the web app."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "allowedValues": [
+        "F1",
+        "D1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "defaultValue": "S1",
+      "metadata": {
+        "description": "The pricing tier for the hosting plan."
+      }
+    },
+    "workerSize": {
+      "type": "string",
+      "allowedValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "defaultValue": "0",
+      "metadata": {
+        "description": "The instance size of the hosting plan (small, medium, or large)."
+      }
+    },
+    "repoURL": {
+      "type": "string",
+      "defaultValue": "https://github.com/EktaDate/MarketSummaryWeb.git",
+      "metadata": {
+        "description": "The URL for the GitHub repository that contains the project to deploy."
+      }
+    },
+    "branch": {
+      "type": "string",
+      "defaultValue": "master",
+      "metadata": {
+        "description": "The branch of the GitHub repository to use."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+	 "dbtype": {
+      "type": "string",
+      "defaultValue": "AZURESQL",
+      "metadata": {
+        "description": "Type of database"
+      }
+    },
+	 "consoleappfunctionurl": {
+      "type": "string",
+      "defaultValue": "https://mrsprospectsfunctionapp.azurewebsites.net/api/RunConsoleApp",
+      "metadata": {
+        "description": "Prospect Function Url"
+      }
+    },
+	 "pythonfunctionurl": {
+      "type": "string",
+      "defaultValue": "https://mrsprospectsummaryfunctionapp.azurewebsites.net/api/RunPythonScripts",
+      "metadata": {
+        "description": "Python function Url"
+      }
+    },
+	 "tableStorageConnection": {
+      "type": "string",
+      "defaultValue": "DefaultEndpointsProtocol=https;AccountName=prospectdata;AccountKey=drRC8SAfgRWS/VC7Tlew4mF73hxehhUNRKJK7SZpve2W56h9h0Z5rFQWO8aUNsGItUI0aEpdyo6t8u4WTh0BDg==;EndpointSuffix=core.windows.net",
+      "metadata": {
+        "description": "Table storage connection string"
+      }
+	  },
+	  "connectionstring": {
+      "type": "string",
+      "defaultValue":"metadata=res://*/Models.ProspectDataModel.csdl|res://*/Models.ProspectDataModel.ssdl|res://*/Models.ProspectDataModel.msl;provider=System.Data.SqlClient;provider connection string=\"data source=mrsmasteksql.database.windows.net;initial catalog=mrsProspectData;user id=sysadmin;password=Mastek491$;MultipleActiveResultSets=True;App=EntityFramework\"",
+      "metadata": {
+        "description": "Connection string of SQL database"
+      }
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('hostingPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('sku')]",
+        "capacity": "[parameters('workerSize')]"
+      },
+      "properties": {
+        "name": "[parameters('hostingPlanName')]"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('siteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[parameters('hostingPlanName')]",
+        "siteConfig": {
+          "connectionStrings": [
+            {
+              "name": "ProspectDBContext",
+              "connectionString": "[parameters('connectionstring')]",
+              "type": 3
+            }
+          ],
+          "appSettings": [
+            {
+              "name": "dbtype",
+              "value": "[parameters('dbtype')]"
+            },
+            {
+              "name": "consoleappfunctionurl",
+              "value": "[parameters('consoleappfunctionurl')]"
+            },
+            {
+              "name": "pythonfunctionurl",
+              "value": "[parameters('pythonfunctionurl')]"
+            },
+            {
+              "name": "tableStorageConnection",
+              "value": "[parameters('tableStorageConnection')]"
+            }
+          ]
+        }
+
+      },
+      "resources": [
+        {
+          "apiVersion": "2015-08-01",
+          "name": "web",
+          "type": "sourcecontrols",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]"
+          ],
+          "properties": {
+            "RepoUrl": "[parameters('repoURL')]",
+            "branch": "[parameters('branch')]",
+            "IsManualIntegration": true
+          }
+        }               
+      ]
+    }
+  ]
+}

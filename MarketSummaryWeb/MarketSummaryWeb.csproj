@@ -258,6 +258,18 @@
     <Content Include="Models\ProspectDataModel.edmx.diagram">
       <DependentUpon>ProspectDataModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Documents\Deployment for Azure POC.docx" />
+    <Content Include="Documents\deployment.ps1" />
+    <Content Include="Documents\function.ps1" />
+    <Content Include="Documents\logicApp_parameters.json" />
+    <Content Include="Documents\logicApp_template.json" />
+    <Content Include="Documents\Market Summary POC.docx" />
+    <Content Include="Documents\parameters.json" />
+    <Content Include="Documents\prospectfunctionApp.zip" />
+    <Content Include="Documents\ProspectSummaryFunctionApp.zip" />
+    <Content Include="Documents\template.json" />
+    <Content Include="Documents\weApp_parameters.json" />
+    <Content Include="Documents\webApp_template.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

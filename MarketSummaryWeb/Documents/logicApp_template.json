@@ -1,0 +1,217 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {       
+        "workflows_LAProcessEmails_name": {
+            "defaultValue": "LAProcessEmails",
+            "type": "String"
+        },
+		"connections_gmail_name": {
+            "defaultValue": "gmail",
+            "type": "String"
+        },
+        "connections_azureblob_name": {
+            "defaultValue": "azureblob",
+            "type": "String"
+        },        
+        "sites_prospectfunctionApp_name": {
+            "defaultValue": "mrsprospectsfunctionApp",
+            "type": "String"
+        },             
+        "connections_conversionservice_name": {
+            "defaultValue": "conversionservice",
+            "type": "String"
+        },
+		"storageAccounts_prospectdata_name": {
+            "defaultValue": "mrsprospectdata",
+            "type": "String"
+        },		
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/resourceGroups/Prospects/providers/Microsoft.Web/connections/gmail'.",
+            "type": "Microsoft.Web/connections",
+            "name": "[parameters('connections_gmail_name')]",
+            "apiVersion": "2016-06-01",
+            "location": "centralindia",
+            "scale": null,
+            "properties": {
+                "displayName": "[concat('mastekalerts@', parameters('connections_gmail_name'),'.com')]",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/providers/Microsoft.Web/locations/centralindia/managedApis/', parameters('connections_gmail_name'))]"
+                }
+            },
+            "dependsOn": []
+        },
+		{
+            "comments": "Generalized from resource: '/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/resourceGroups/Prospects/providers/Microsoft.Web/connections/azureblob'.",
+            "type": "Microsoft.Web/connections",
+            "name": "[parameters('connections_azureblob_name')]",
+            "apiVersion": "2016-06-01",
+            "location": "centralindia",
+            "scale": null,
+            "properties": {
+                "displayName": "msrProspectStorage",
+				"parameterValues": {"accountName": "mrsprospectdata",
+                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_prospectdata_name')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"},
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/providers/Microsoft.Web/locations/centralindia/managedApis/', parameters('connections_azureblob_name'))]"
+                }
+            },
+            "dependsOn": []
+        },
+		{
+            "comments": "Generalized from resource: '/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/resourceGroups/Prospects/providers/Microsoft.Web/connections/conversionservice'.",
+            "type": "Microsoft.Web/connections",
+            "name": "[parameters('connections_conversionservice_name')]",
+            "apiVersion": "2016-06-01",
+            "location": "centralindia",
+            "scale": null,
+            "properties": {
+                "displayName": "Content Conversion",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/providers/Microsoft.Web/locations/centralindia/managedApis/', parameters('connections_conversionservice_name'))]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/resourceGroups/Prospects/providers/Microsoft.Logic/workflows/LAProcessEmails'.",
+            "type": "Microsoft.Logic/workflows",
+            "name": "[parameters('workflows_LAProcessEmails_name')]",
+            "apiVersion": "2017-07-01",
+            "location": "centralindia",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_new_email_arrives": {
+                            "recurrence": {
+                                "frequency": "Hour",
+                                "interval": 3
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['gmail']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/Mail/OnNewEmail",
+                                "queries": {
+                                    "fetchOnlyWithAttachments": false,
+                                    "importance": "All",
+                                    "includeAttachments": false,
+                                    "label": "INBOX",
+                                    "starred": "All"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Create_blob": {
+                            "runAfter": {
+                                "Html_to_text_2": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "@body('Html_to_text_2')",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azureblob']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/datasets/default/files",
+                                "queries": {
+                                    "folderPath": "/emailbody",
+                                    "name": "@{guid()}",
+                                    "queryParametersSingleEncoded": true
+                                }
+                            },
+                            "runtimeConfiguration": {
+                                "contentTransfer": {
+                                    "transferMode": "Chunked"
+                                }
+                            }
+                        },
+                        "Html_to_text_2": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": "@triggerBody()?['Body']",
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['conversionservice']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/html2text"
+                            }
+                        },
+                        "RunConsoleApp": {
+                            "runAfter": {
+                                "Create_blob": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Function",
+                            "inputs": {
+                                "body": {
+                                    "type": "@{body('Create_blob')?['Name']}"
+                                },
+                                "function": {
+                                    "id": "[concat(resourceId('Microsoft.Web/sites', parameters('sites_prospectfunctionApp_name')), '/functions/RunConsoleApp')]"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azureblob": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_azureblob_name'))]",
+                                "connectionName": "azureblob",
+                                "id": "/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/providers/Microsoft.Web/locations/centralindia/managedApis/azureblob"
+                            },
+                            "conversionservice": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_conversionservice_name'))]",
+                                "connectionName": "conversionservice",
+                                "id": "/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/providers/Microsoft.Web/locations/centralindia/managedApis/conversionservice"
+                            },
+                            "gmail": {
+                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_gmail_name'))]",
+                                "connectionName": "gmail",
+                                "id": "/subscriptions/ef249e7c-8485-47bf-9449-166c6d84ac01/providers/Microsoft.Web/locations/centralindia/managedApis/gmail"
+                            }
+                        }
+                    }
+                }
+            },
+            "dependsOn": [
+				"[resourceId('Microsoft.Web/connections', parameters('connections_azureblob_name'))]",
+                "[resourceId('Microsoft.Web/connections', parameters('connections_conversionservice_name'))]",
+                "[resourceId('Microsoft.Web/connections', parameters('connections_gmail_name'))]"			
+            ]
+        }                       
+    ]
+}

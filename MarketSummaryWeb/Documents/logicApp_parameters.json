@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {        
+        "connections_gmail_name": {
+            "value": "gmail"
+        },
+        "connections_azureblob_name": {
+            "value": "azureblob"
+        },      
+        "sites_prospectfunctionApp_name": {
+            "value": "mrsprospectsfunctionApp"
+        },
+		"workflows_LAProcessEmails_name": {
+            "value": "mrsLAProcessEmails"
+        },                
+        "connections_conversionservice_name": {
+            "value": "conversionservice"
+        },
+		"storageAccounts_prospectdata_name": {
+            "value": "mrsprospectdata"
+        }      
+    }
+}
