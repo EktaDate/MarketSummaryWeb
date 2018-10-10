@@ -1,66 +1,69 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "servers_masteksql_name": {
-            "value": "mrsmasteksql"
-        },                
-		"serverfarms_MarketSummaryPlan_name": {
-            "value": "mrsMarketSummaryPlan"
-        },
-		"sites_prospectsfunctionapp_name": {
-            "value": "mrsprospectsfunctionApp"
-        },         
-        "storageAccounts_prospectdata_name": {
-            "value": "mrsprospectdata"
-        },
-		"sites_prospectsummaryfunctionapp_name": {
-            "value": "mrsprospectsummaryfunctionapp"
-        },       
-        "advisors_DropIndex_name": {
-            "value": "DropIndex"
-        },      
-        "advisors_CreateIndex_name": {
-            "value": "CreateIndex"
-        },
-		"storageAccounts_prospectsfunctionapp_name": {
-            "value": "mrsprospectsfunctionapp"
-        },
-        "databases_ProspectData_name": {
-            "value": "mrsProspectData"
-        },             
-        "advisors_ForceLastGoodPlan_name": {
-            "value": "ForceLastGoodPlan"
-        },        
-        "encryptionProtector_current_name": {
-            "value": "current"
-        },        
-        "databases_master_name": {
-            "value": "master"
-        },
-        "advisors_DropIndex_name_1": {
-            "value": "DropIndex"
-        },       
-        "advisors_CreateIndex_name_1": {
-            "value": "CreateIndex"
-        },               
-        "advisors_ForceLastGoodPlan_name_1": {
-            "value": "ForceLastGoodPlan"
-        },           
-        "transparentDataEncryption_current_name_1": {
-            "value": "current"
-        },
-		 "firewallRules_ClientIpAddress_name": {
-            "value": "ClientIpAddress"
-        },
-		"config_web_name_3": {
-            "value": "web"
-        },
-		"hostNameBindings_prospectsfunctionapp.azurewebsites.net_name": {
-            "value": "mrsprospectsfunctionapp.azurewebsites.net"
-        },
-		"hostNameBindings_prospectsummaryfunctionapp.azurewebsites.net_name": {
-            "value": "mrsprospectsummaryfunctionapp.azurewebsites.net"
-        }
+  "parameters": {
+    "servers_masteksql_name": {
+      "value": "mrsmasteksql"
+    },
+    "serverfarms_MarketSummaryPlan_name": {
+      "value": "mrsMarketSummaryPlan"
+    },
+    "sites_prospectsfunctionapp_name": {
+      "value": "mrsprospectsfunctionApp"
+    },
+    "storageAccounts_prospectdata_name": {
+      "value": "mrsprospectdata"
+    },
+    "sites_prospectsummaryfunctionapp_name": {
+      "value": "mrsprospectsummaryfunctionapp"
+    },
+    "accounts_BingSearch_name": {
+      "value": "mrsBingSearch"
+    },
+    "advisors_DropIndex_name": {
+      "value": "DropIndex"
+    },
+    "advisors_CreateIndex_name": {
+      "value": "CreateIndex"
+    },
+    "storageAccounts_prospectsfunctionapp_name": {
+      "value": "mrsprospectsfunctionapp"
+    },
+    "databases_ProspectData_name": {
+      "value": "mrsProspectData"
+    },
+    "advisors_ForceLastGoodPlan_name": {
+      "value": "ForceLastGoodPlan"
+    },
+    "encryptionProtector_current_name": {
+      "value": "current"
+    },
+    "databases_master_name": {
+      "value": "master"
+    },
+    "advisors_DropIndex_name_1": {
+      "value": "DropIndex"
+    },
+    "advisors_CreateIndex_name_1": {
+      "value": "CreateIndex"
+    },
+    "advisors_ForceLastGoodPlan_name_1": {
+      "value": "ForceLastGoodPlan"
+    },
+    "transparentDataEncryption_current_name_1": {
+      "value": "current"
+    },
+    "firewallRules_ClientIpAddress_name": {
+      "value": "ClientIpAddress"
+    },
+    "config_web_name_3": {
+      "value": "web"
+    },
+    "hostNameBindings_prospectsfunctionapp.azurewebsites.net_name": {
+      "value": "mrsprospectsfunctionapp.azurewebsites.net"
+    },
+    "hostNameBindings_prospectsummaryfunctionapp.azurewebsites.net_name": {
+      "value": "mrsprospectsummaryfunctionapp.azurewebsites.net"
     }
+  }
 }
