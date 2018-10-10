@@ -1,0 +1,105 @@
+Go
+CREATE TABLE [dbo].[ProspectData] (
+    [Id]                INT             IDENTITY (1, 1) NOT NULL,
+    [ProspectName]      NVARCHAR (1000) NULL,
+    [SearchString]      NVARCHAR (4000) NULL,
+    [SearchResult]      NVARCHAR (MAX)  NULL,
+    [TwitterUpdates]    BIT             NULL,
+    [FacebookUpdates]   BIT             NULL,
+    [LinkedinUpdates]   BIT             NULL,
+    [EmailUpdates]      BIT             NULL,
+    [BingSearchUpdates] BIT             NULL,
+    [IsProcessed]       BIT             NULL,
+    [DataProcessedDate] DATETIME        NULL
+);
+
+Go
+CREATE TABLE [dbo].[ProspectDataSearchCriteria] (
+    [Id]                INT             IDENTITY (1, 1) NOT NULL,
+    [ProspectName]      NVARCHAR (1000) NULL,
+    [SearchString]      NVARCHAR (4000) NULL,
+    [TwitterUpdates]    BIT             NULL,
+    [FacebookUpdates]   BIT             NULL,
+    [LinkedinUpdates]   BIT             NULL,
+    [EmailUpdates]      BIT             NULL,
+    [BingSearchUpdates] BIT             NULL
+);
+
+Go
+CREATE TABLE [dbo].[ProspectSummary] (
+    [Id]             INT            IDENTITY (1, 1) NOT NULL,
+    [Summary]        NVARCHAR (MAX) NULL,
+    [url]            VARCHAR (4000) NULL,
+    [ProspectDataId] INT            NULL
+);
+
+Go
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Capita', N'IT service contract', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Capita', N'New contract Sign', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Capita', N'Acquisition', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Capita ', N'Merger', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'International Personal Finance', N'IT service contract', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'International Personal Finance', N'New contract Sign', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'International Personal Finance', N'Acquisition', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'International Personal Finance', N'Merger', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'International Personal Finance', N'shares weak', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Capita', N'shares weak', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Capita', N'outsourcing', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Capita', N'Innovation', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'together uk mortgage', N'contract', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'together uk mortgage', N'Acquisition', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Morrisons Retail UK ', N'IT service contract', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Morrisons Retail UK ', N'Acquisition', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Morrisons Retail UK ', N'Merger', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Morrisons Retail UK ', N'cut jobs', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Morrisons Retail UK ', N'store close', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Kerry Foods UK', N'Acquisition', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Kerry Foods UK', N'share weak', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Specsavers ', N'IT service contract', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Specsavers ', N'Acquisition', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Specsavers ', N'Store close', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'IPF', N'Financial Results', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Swire', N'Conglomerate', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'John Lewis Partnership', N'Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Stemcor', N'Commodities', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Telereal Trillium', N'Property', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Iceland Ltd', N'Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Palmer and Harvey', N'Wholesale, Distribution and Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Arnold Clark Automobiles', N'Automotive', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Brakes Group', N'Food', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'2 Sisters Food Group', N'Food Manufacturing', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'JCB', N'Construction and Agriculture Machinery', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Laing O''Rourke', N'Construction', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Bestway Group', N'Conglomerate', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Pentland Group', N'Multi Brand Products', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Dyson', N'Technology Products', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'European Metal Recycling', N'Recycling', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Thames Water', N'Utilities', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Mace', N'Construction', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Arcadia Group', N'Clothing', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Northern & Shell Media Group', N'Publishing', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'MRH (GB)', N'Oil & Gas', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Bakkavor', N'Food Manufacturing', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Wates', N'Construction', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Marshall Group', N'Conglomerate', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Bet365', N'Gambling', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Clarks', N'Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Iglo', N'Foods', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Mott MacDonald', N'Consultancy', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Willmott Dixon', N'Construction', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'House of Fraser', N'Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'New Look', N'Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Anglian Water', N'Utilities', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Matalan', N'Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Gala Coral Group', N'Gambling', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Arup', N'Construction Consultancy', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Poundland', N'Retail', 0, 0, 0, 0, 0)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'A.F. Blakemore & Son Ltd', N'Food', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'United Biscuits', N'Foods', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Bibby Line', N'Transportation', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Keepmoat', N'Housebuilding', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Linpac', N'Packaging', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'TJ Morris', N'Retail', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'JCT600', N'Automotive', 0, 0, 0, 0, 1)
+INSERT INTO [dbo].[ProspectDataSearchCriteria] ( [ProspectName], [SearchString], [TwitterUpdates], [FacebookUpdates], [LinkedinUpdates], [EmailUpdates], [BingSearchUpdates]) VALUES ( N'Listers', N'Automotive', 0, 0, 0, 0, 1)
+
